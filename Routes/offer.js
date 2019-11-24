@@ -87,10 +87,52 @@ router.post("/offer/create", async (req, res) => {
 // --------------------  READ --------------------> Display one or more Offer(s)
 router.get("/offer/with-count", async (req, res) => {
   try {
-    const offers = await Offer.find();
-    res.json({ count: offers.length, offers: offers });
+    // We create an object containing all fitlers passed in query
+    const createFilters = req => {
+      const filters = {};
+      if (req.query.priceMin) {
+        filters.price = {};
+        filters.price.$gte = req.query.priceMin;
+      }
+      if (req.query.priceMax) {
+        if (filters.price === undefined) {
+          filters.price = {};
+        }
+        filters.price.$lte = req.query.priceMax;
+      }
+      if (req.query.search) {
+        filters.title = new RegExp(req.query.search, "i");
+      }
+      return filters;
+    };
+    const filters = createFilters(req);
+    const search = Offer.find(filters);
+
+    // Here we sort the array by price
+    if (req.query.sort === "price-asc") {
+      search.sort({ price: 1 });
+    } else if (req.query.sort === "price-desc") {
+      search.sort({ price: -1 });
+    }
+
+    // Here we deal with the pagination
+    if (req.query.limit) {
+      search.skip(Number(req.query.skip)).limit(Number(req.query.limit));
+    }
+    const offers = await search;
+    const count = await Offer.find(); // To get the total number of offer (for pagination)
+    res.json({ count: count.length, offers: offers });
   } catch (error) {
     res.status(400);
+  }
+});
+
+router.get("/offer/:id", async (req, res) => {
+  try {
+    const offer = await Offer.findById(req.params.id);
+    res.json(offer);
+  } catch (error) {
+    res.status(400).json(error.message);
   }
 });
 
