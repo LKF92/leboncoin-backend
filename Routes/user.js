@@ -4,6 +4,7 @@ const encBase64 = require("crypto-js/enc-base64");
 const uid2 = require("uid2");
 const SHA256 = require("crypto-js/sha256");
 const User = require("../Models/User");
+const Offer = require("../Models/Offer");
 
 // ----------  CREATE ----------> page for creation of new users
 router.post("/user/sign-in", async (req, res) => {
@@ -44,16 +45,13 @@ router.post("/user/login", async (req, res) => {
   try {
     User.findOne({ email: req.fields.email }).exec((err, user) => {
       if (err) {
-        console.log("erreur ici laaaaa");
         return next(err.message);
       }
       if (user) {
-        console.log("user trouvé");
         if (
           SHA256(req.fields.password + user.salt).toString(encBase64) ===
           user.hash
         ) {
-          console.log("user authentifié");
           return res.json({
             _id: user._id,
             token: user.token,

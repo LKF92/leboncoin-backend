@@ -19,6 +19,8 @@ app.use(cors());
 // We import the routes
 const userRoute = require("./Routes/user");
 app.use(userRoute);
+const offersRoute = require("./Routes/offer");
+app.use(offersRoute);
 
 // Let's start the server,
-app.listen(process.env.PORT, () => console.log("Server started"));
+app.listen(process.env.PORT, () => console.log("Server is up !"));
