@@ -3,8 +3,6 @@ const router = express.Router();
 const Offer = require("../Models/Offer");
 const User = require("../Models/User");
 const cloudinary = require("cloudinary").v2;
-const cors = require("cors");
-app.use(cors());
 
 // configurate Cloudinary
 cloudinary.config({
@@ -13,6 +11,9 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
+router.get("/", async (req, res) => {
+  res.send("all ok here");
+});
 // --------------------  CREATE --------------------> Create new Offer
 router.post("/offer/create", async (req, res) => {
   try {
