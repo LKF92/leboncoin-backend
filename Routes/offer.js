@@ -3,6 +3,8 @@ const router = express.Router();
 const Offer = require("../Models/Offer");
 const User = require("../Models/User");
 const cloudinary = require("cloudinary").v2;
+const cors = require("cors");
+app.use(cors());
 
 // configurate Cloudinary
 cloudinary.config({
