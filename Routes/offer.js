@@ -3,7 +3,7 @@ const router = express.Router();
 const Offer = require("../Models/Offer");
 const User = require("../Models/User");
 const cloudinary = require("cloudinary").v2;
-const cors = require("cors");
+// const cors = require("cors");
 
 // configurate Cloudinary
 cloudinary.config({
@@ -13,7 +13,7 @@ cloudinary.config({
 });
 
 // --------------------  CREATE --------------------> Create new Offer
-router.post("/offer/create", cors(), async (req, res) => {
+router.post("/offer/create", async (req, res) => {
   try {
     // We check that the user is connected or not(token or not in the header)
     const auth = req.headers.authorization;
@@ -86,7 +86,7 @@ router.post("/offer/create", cors(), async (req, res) => {
 });
 
 // --------------------  READ --------------------> Display one or more Offer(s)
-router.get("/offer/with-count", cors(), async (req, res) => {
+router.get("/offer/with-count", async (req, res) => {
   try {
     // We create an object containing all fitlers passed in query
     const createFilters = req => {
@@ -128,7 +128,7 @@ router.get("/offer/with-count", cors(), async (req, res) => {
   }
 });
 
-router.get("/offer/:id", cors(), async (req, res) => {
+router.get("/offer/:id", async (req, res) => {
   try {
     const offer = await Offer.findById(req.params.id);
     res.json(offer);
