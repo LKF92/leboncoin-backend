@@ -81,6 +81,8 @@ router.post("/offer/create", async (req, res) => {
     });
     res.status(200).json(offer);
   } catch (error) {
+    console.log("Error from CATCH");
+
     res.status(400).json(error);
   }
 });
